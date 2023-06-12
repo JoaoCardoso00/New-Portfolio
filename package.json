@@ -9,9 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.2",
+    "@rive-app/react-canvas": "^3.0.53",
     "@types/node": "20.2.5",
     "@types/react": "18.2.8",
     "@types/react-dom": "18.2.4",
+    "@use-gesture/react": "^10.2.27",
     "autoprefixer": "10.4.14",
     "eslint": "8.42.0",
     "eslint-config-next": "13.4.4",
@@ -19,6 +22,7 @@
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-use-measure": "^2.1.1",
     "tailwindcss": "3.3.2",
     "typescript": "5.1.3"
   }
