@@ -2,8 +2,9 @@
 
 import { MouseEvent } from "react";
 import { animated, useSpring } from "@react-spring/web";
+import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
+import { CursorStateProvider } from "@/hooks/useCursorState";
 import useMeasure from "react-use-measure";
-import Rive from "@rive-app/react-canvas";
 
 export function CustomCursor({ children }: { children: React.ReactNode }) {
   const [ref, { left, top }] = useMeasure();
@@ -24,6 +25,29 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const { rive, RiveComponent } = useRive({
+    src: "/custom_cursor.riv",
+    stateMachines: "hover",
+    autoplay: true,
+  });
+
+  const stateMachineInput = useStateMachineInput(
+    rive,
+    "hover",
+    "IsHoveringClickableArea"
+  );
+
+  function setCursorState(state: boolean) {
+    if (stateMachineInput) {
+      stateMachineInput.value = state;
+    }
+  }
+
+  const CursorState = {
+    isHoveringClickableArea: !!stateMachineInput?.value,
+    setIsHoveringClickableArea: setCursorState,
+  };
+
   return (
     <div
       className="h-full w-full absolute bg-transparent overflow-hidden cursor-none"
@@ -34,12 +58,11 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
         style={springs}
         className="h-60 w-60 absolute z-50 pointer-events-none"
       >
-        <Rive
-          src="/custom_cursor.riv"
-          className="-translate-x-10 -translate-y-8"
-        />
+        <RiveComponent className="-translate-x-10 -translate-y-8 h-60" />
       </animated.div>
-      {children}
+      <CursorStateProvider cursorState={CursorState}>
+        {children}
+      </CursorStateProvider>
     </div>
   );
 }
