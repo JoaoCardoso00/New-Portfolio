@@ -1,13 +1,19 @@
 "use client";
 
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { animated, useSpring } from "@react-spring/web";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { CursorStateProvider } from "@/hooks/useCursorState";
 import useMeasure from "react-use-measure";
+import { useWindowScroll } from "react-use";
 
 export function CustomCursor({ children }: { children: React.ReactNode }) {
   const [ref, { left, top }] = useMeasure();
+  const [previousMousePosition, setPreviousMousePosition] = useState({
+    x: 0,
+    y: 0,
+  });
+  const { y } = useWindowScroll();
   const [springs, api] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -19,9 +25,14 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
   }));
 
   const handleMouseMove = (e: MouseEvent) => {
+    setPreviousMousePosition({
+      x: e.clientX,
+      y: e.clientY,
+    });
+
     api.start({
       x: e.clientX - 75 - left,
-      y: e.clientY - 75 - top,
+      y: e.clientY - 75 - top + y,
     });
   };
 
@@ -48,9 +59,16 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
     setIsHoveringClickableArea: setCursorState,
   };
 
+  useEffect(() => {
+    api.start({
+      x: previousMousePosition.x - 75 - left,
+      y: previousMousePosition.y - 75 - top + y,
+    });
+  }, [y]);
+
   return (
     <div
-      className="h-full w-full absolute bg-transparent overflow-hidden cursor-none"
+      className="h-fit w-full min-h-full absolute bg-red-50 overflow-hidden"
       ref={ref}
       onMouseMove={handleMouseMove}
     >

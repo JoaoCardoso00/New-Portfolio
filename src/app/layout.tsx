@@ -1,5 +1,5 @@
+import "../styles/globals.css";
 import { CustomCursor } from "@/components/cursor";
-import "./globals.css";
 import { Playfair_Display } from "next/font/google";
 
 const PlayFairDisplay = Playfair_Display({ subsets: ["latin"] });
@@ -16,7 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={PlayFairDisplay.className}>
+      <body className={`${PlayFairDisplay.className} min-h-screen`}>
         <CustomCursor>{children}</CustomCursor>
       </body>
     </html>
