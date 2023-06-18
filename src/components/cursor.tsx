@@ -64,7 +64,7 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
       x: previousMousePosition.x - 75 - left,
       y: previousMousePosition.y - 75 - top + y,
     });
-  }, [api, left, previousMousePosition.x, previousMousePosition.y, top, y]);
+  }, [y]);
 
   return (
     <div
