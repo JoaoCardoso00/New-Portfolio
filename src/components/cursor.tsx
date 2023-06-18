@@ -13,7 +13,7 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
     x: 0,
     y: 0,
   });
-  const { y } = useWindowScroll();
+  const { x, y } = useWindowScroll();
   const [springs, api] = useSpring(() => ({
     x: 0,
     y: 0,
@@ -64,7 +64,7 @@ export function CustomCursor({ children }: { children: React.ReactNode }) {
       x: previousMousePosition.x - 75 - left,
       y: previousMousePosition.y - 75 - top + y,
     });
-  }, [y]);
+  }, [x, y, left, top, api, previousMousePosition.x, previousMousePosition.y]);
 
   return (
     <div
